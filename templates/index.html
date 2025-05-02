@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation App</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/0212e5d715.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c7873;
+            --secondary-color: #6fb98f;
+            --light-color: #f4f9f4;
+            --dark-color: #021c1e;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+            background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                              url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand h2 {
+            font-family: 'Roboto Slab', serif;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+        
+        .form-title h2 {
+            font-weight: 700;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(111, 185, 143, 0.25);
+        }
+        
+        .btn-predict {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-predict:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1">
+                    <a href="index.html" style="text-decoration: none;"><h2><i class="fas fa-leaf mr-2"></i>Crop Recommendation</h2></a>
+                </span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div class="form-container">
+                <div class="form-title">
+                    <h2><i class="fas fa-seedling mr-2"></i>Find the Perfect Crop</h2>
+                    <p class="lead">Enter your soil and weather conditions to get the best crop recommendation</p>
+                </div>
+                
+                <form action="/predict" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group input-icon">
+                                <label for="n-ratio">Nitrogen Content (N)</label>
+                                <input name="N" type="number" step="0.01" class="form-control" id="n-ratio" placeholder="Enter N ratio" required>
+                                <i class="fas fa-atom"></i>
+                            </div>
+                            
+                            <div class="form-group input-icon">
+                                <label for="p-ratio">Phosphorous Content (P)</label>
+                                <input name="P" type="number" step="0.01" class="form-control" id="p-ratio" placeholder="Enter P ratio" required>
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            
+                            <div class="form-group input-icon">
+                                <label for="k-ratio">Potassium Content (K)</label>
+                                <input name="K" type="number" step="0.01" class="form-control" id="k-ratio" placeholder="Enter K ratio" required>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group input-icon">
+                                <label for="temp">Temperature (°C)</label>
+                                <input name="T" type="number" step="0.1" class="form-control" id="temp" placeholder="Enter temperature" required>
+                                <i class="fas fa-temperature-low"></i>
+                            </div>
+                            
+                            <div class="form-group input-icon">
+                                <label for="humid">Humidity (%)</label>
+                                <input name="H" type="number" step="0.1" class="form-control" id="humid" placeholder="Enter humidity" required>
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            
+                            <div class="form-group input-icon">
+                                <label for="ph">Soil pH</label>
+                                <input name="PH" type="number" step="0.1" class="form-control" id="ph" placeholder="Enter pH value" min="0" max="14" required>
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            
+                            <div class="form-group input-icon">
+                                <label for="rainfall">Rainfall (mm)</label>
+                                <input name="R" type="number" step="0.1" class="form-control" id="rainfall" placeholder="Enter rainfall" required>
+                                <i class="fas fa-cloud-rain"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-predict">
+                            <i class="fas fa-chart-line mr-2"></i>Get Recommendation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
